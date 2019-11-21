@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xiaoduo.sms.mapper.OverflowListMapper">
+
+    <!--
+        获取当天最大报溢单号
+    -->
+    <select id="getTodayMaxOverflowNumber" resultType="java.lang.String">
+        SELECT
+          MAX(overflow_number)
+        FROM
+          t_overflow_list
+        WHERE
+          TO_DAYS(overflow_date) = TO_DAYS(NOW())
+    </select>
+
+</mapper>

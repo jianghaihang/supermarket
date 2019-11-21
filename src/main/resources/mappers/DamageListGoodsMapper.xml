@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xiaoduo.sms.mapper.DamageListGoodsMapper">
+
+    <!--
+        返回的customer集合
+    -->
+    <resultMap id="damageListGoodsMap" type="com.xiaoduo.sms.entity.DamageListGoods">
+        <id column="id" property="id"></id>
+        <result column="code" property="code"></result>
+        <result column="model" property="model"></result>
+        <result column="name" property="name"></result>
+        <result column="num" property="num"></result>
+        <result column="price" property="price"></result>
+        <result column="total" property="total"></result>
+        <result column="unit" property="unit"></result>
+        <result column="damage_list_id" property="damage_listId"></result>
+        <result column="type_id" property="typeId"></result>
+        <result column="goods_id" property="goodsId"></result>
+    </resultMap>
+
+    <!--
+        根据报损单id查询所有报损单商品
+    -->
+    <select id="listByDamageListId" resultMap="damageListGoodsMap" parameterType="java.lang.Integer">
+        SELECT
+          id,
+          code,
+          model,
+          name,
+          num,
+          price,
+          total,
+          unit,
+          damage_list_id,
+          type_id,
+          goods_id,
+          sum(price) as total
+        FROM
+          t_damage_list_goods
+        WHERE
+          damage_list_id=#{damageListId}
+    </select>
+
+
+    <!--
+        删除指定报损单的所有商品
+    -->
+    <select id="deleteByDamageListId" resultType="java.lang.Integer">
+        DELETE
+        FROM
+          t_damage_list_goods
+        WHERE
+          damage_list_id=#{damageListId}
+    </select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

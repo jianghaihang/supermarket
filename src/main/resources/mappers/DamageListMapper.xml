@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xiaoduo.sms.mapper.DamageListMapper">
+
+    <!--
+        获取当天最大报损单号
+    -->
+    <select id="getTodayMaxDamageNumber" resultType="java.lang.String">
+        SELECT
+          MAX(damage_number)
+        FROM
+          t_damage_list
+        WHERE
+          TO_DAYS(damage_date) = TO_DAYS(NOW())
+    </select>
+
+</mapper>

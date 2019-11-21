@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xiaoduo.sms.mapper.MenuMapper">
+
+    <!--
+        menu与role为多对一
+        role与roleMenu为一对一
+    -->
+    <resultMap id="menuMapAny" type="com.xiaoduo.sms.entity.Menu">
+        <id column="id" property="id"></id>
+        <result column="icon" property="icon"></result>
+        <result column="name" property="name"></result>
+        <result column="state" property="state"></result>
+        <result column="url" property="url"></result>
+        <result column="p_id" property="pId"></result>
+        <association property="roleMap" javaType="com.xiaoduo.sms.entity.Role">
+            <id column="id" property="id"></id>
+            <result column="name" property="name"></result>
+            <result column="remarks" property="remarks"></result>
+            <collection property="roleMenuMap" ofType="com.xiaoduo.sms.entity.RoleMenu">
+                <id column="id" property="id"></id>
+            </collection>
+        </association>
+    </resultMap>
+
+    <!--
+        menu集合
+    -->
+    <resultMap id="menuMap" type="com.xiaoduo.sms.entity.Menu">
+        <id column="id" property="id"></id>
+        <result column="icon" property="icon"></result>
+        <result column="name" property="name"></result>
+        <result column="state" property="state"></result>
+        <result column="url" property="url"></result>
+        <result column="p_id" property="pId"></result>
+    </resultMap>
+
+    <!--
+        根据id获取权限菜单集合
+    -->
+    <select id="findByRoleId" resultMap="menuMapAny" parameterType="java.lang.Integer">
+        SELECT
+          m.id,
+          m.icon,
+          m.name,
+          m.state,
+          m.url,
+          m.p_id
+        FROM
+          t_role r
+        LEFT JOIN
+          t_menu m ON r.id = m.id
+        LEFT JOIN
+          t_role_menu rm ON m.id = rm.id
+        WHERE
+          r.id = #{roleId}
+    </select>
+
+    <!--
+        根据父节点以及用户角色id集合查询子节点
+    -->
+    <select id="findByParentIdAndRoleId" resultMap="menuMap" parameterType="java.lang.Integer">
+        SELECT
+          id,
+          icon,
+          name,
+          state,
+          url,
+          p_id
+        FROM
+          t_menu
+        WHERE
+          p_id=#{parentId}
+        AND
+          id
+        IN (
+          SELECT
+            menu_id
+          FROM
+            t_role_menu
+          WHERE
+            role_id=#{roleId}
+        )
+    </select>
+
+    <!--
+        根据父节点查找所有子节点
+    -->
+    <select id="findByParentId" resultMap="menuMap" parameterType="java.lang.Integer">
+        SELECT
+          id,
+          icon,
+          name,
+          state,
+          url,
+          p_id
+        FROM
+          t_menu
+        WHERE
+          p_id=#{parentId}
+    </select>
+
+</mapper>

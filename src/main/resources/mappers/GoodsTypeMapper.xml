@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xiaoduo.sms.mapper.GoodsTypeMapper">
+
+    <!--
+            返回的GoodsType集合
+        -->
+    <resultMap id="goodsTypeMap" type="com.xiaoduo.sms.entity.GoodsType">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="p_id" property="pId"></result>
+        <result column="state" property="state"></result>
+        <result column="icon" property="icon"></result>
+    </resultMap>
+
+    <!--
+        根据父节点查找商品类别
+    -->
+    <select id="findByUserName" resultMap="goodsTypeMap" parameterType="java.lang.Integer">
+        SELECT
+          id,
+          name,
+          p_id,
+          state,
+          icon
+        FROM
+          t_goodstype
+        WHERE
+          p_id=#{parentId}
+    </select>
+
+</mapper>

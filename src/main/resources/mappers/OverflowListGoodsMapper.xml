@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xiaoduo.sms.mapper.OverflowListGoodsMapper">
+
+    <!--
+        overflowListMap集合
+    -->
+    <resultMap id="overflowListMap" type="com.xiaoduo.sms.entity.OverflowListGoods">
+        <id column="id" property="id"></id>
+        <result column="code" property="code"></result>
+        <result column="model" property="model"></result>
+        <result column="name" property="name"></result>
+        <result column="total" property="total"></result>
+        <result column="unit" property="unit"></result>
+        <result column="overflow_list_id" property="overflowListId"></result>
+        <result column="type_id" property="typeId"></result>
+        <result column="goods_id" property="goodsId"></result>
+    </resultMap>
+
+    <!--
+        根据报溢单id查询所有报溢单商品
+    -->
+    <select id="findByParentId" resultMap="overflowListMap" parameterType="java.lang.Integer">
+        SELECT
+          id,
+          code,
+          model,
+          name,
+          num,
+          price,
+          total,
+          unit,
+          overflow_list_id,
+          type_id,
+          goods_id
+        FROM
+          t_overflow_list_goods
+        WHERE
+          overflow_list_id=#{overflowListId}
+    </select>
+
+    <!--
+        删除指定报溢单的所有商品
+    -->
+    <select id="deleteByOverflowListId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        DELETE
+        FROM
+          t_overflow_list_goods
+        WHERE
+          overflow_list_id=#{overflowListId}
+    </select>
+
+</mapper>

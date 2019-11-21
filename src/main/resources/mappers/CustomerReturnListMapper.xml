@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xiaoduo.sms.mapper.CustomerReturnListMapper">
+
+    <!--
+        获取当天最大客户退货单号
+    -->
+    <select id="getTodayMaxCustomerReturnNumber" resultType="java.lang.String">
+        SELECT
+          MAX(customer_return_number)
+        FROM
+          t_customer_return_list
+        WHERE
+          TO_DAYS(customer_return_date) = TO_DAYS(NOW())
+    </select>
+
+</mapper>

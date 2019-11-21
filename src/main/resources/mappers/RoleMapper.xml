@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xiaoduo.sms.mapper.RoleMapper">
+
+    <!--
+       roleMap集合
+    -->
+    <resultMap id="roleMap" type="com.xiaoduo.sms.entity.Role">
+        <id column="id" property="id"></id>
+        <result column="bz" property="bz"></result>
+        <result column="name" property="name"></result>
+        <result column="remarks" property="remarks"></result>
+        <collection property="userRoleMap" ofType="com.xiaoduo.sms.entity.UserRole">
+            <id column="id" property="id"></id>
+            <result column="user" property="user"></result>
+            <result column="role" property="role"></result>
+            <association property="userMap" javaType="com.xiaoduo.sms.entity.User">
+                <id column="id" property="id"></id>
+            </association>
+        </collection>
+    </resultMap>
+
+    <!--
+        根据用户id查询角色集合
+    -->
+    <select id="findByUserId" resultMap="roleMap" parameterType="java.lang.Integer">
+        SELECT
+          id,
+          bz,
+          name,
+          remarks
+        FROM
+          t_user u
+        LEFT JOIN
+          t_role r ON u.id = r.id
+        LEFT JOIN
+          t_user_role ur ON r.id = ur.id
+        WHERE
+          u.id = #{id}
+    </select>
+
+</mapper>
